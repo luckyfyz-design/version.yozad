@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📊 固件版本信息</title>
+  <style>
+    body {
+      font-family: "Segoe UI", sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .controls {
+      margin-bottom: 20px;
+      padding: 15px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .controls-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .controls-title {
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    .checkbox-groups {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+	/* 选择框组样式 */
+    .checkbox-group {
+      flex: 1;
+      min-width: 100px;
+    }
+    .checkbox-group-title {
+      font-weight: bold;
+      color: #3498db;
+      margin-bottom: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #eee;
+    }
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 5px;
+    }
+    .checkbox-item label {
+      font-size: 0.85em;
+      color: #555;
+      cursor: pointer;
+    }
+    .checkbox-item input[type="checkbox"] {
+      cursor: pointer;
+    }
+    button {
+      padding: 8px 16px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.9em;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    button:disabled {
+      background-color: #95a5a6;
+      cursor: not-allowed;
+    }
+    .download-btn {
+      background-color: #2ecc71;
+      padding: 4px 12px;
+      font-size: 0.8em;
+    }
+    .download-btn:hover {
+      background-color: #27ae60;
+    }
+    .view-log-btn {
+      background-color: #f39c12;
+      padding: 4px 12px;
+      font-size: 0.8em;
+    }
+    .view-log-btn:hover {
+      background-color: #e67e22;
+    }
+    .refresh-btn {
+      background-color: #2ecc71;
+    }
+    .refresh-btn:hover {
+      background-color: #27ae60;
+    }
+    .product-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      background-color: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .product-card h2 {
+      margin-top: 0;
+      color: #2c3e50;
+      font-size: 1.6em;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #3498db;
+      margin-bottom: 20px;
+    }
+    .module-card {
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 15px;
+      background-color: #f9f9f9;
+    }
+    .module-card:last-child {
+      margin-bottom: 0;
+    }
+    .module-title {
+      font-size: 1.2em;
+      color: #2980b9;
+      margin-top: 0;
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed #ddd;
+    }
+    .info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    .info-item-version {
+      flex: 1;
+      min-width: 300px;
+    }
+	.info-item {
+      flex: 1;
+      min-width: 80px;
+    }
+    .label {
+      font-weight: bold;
+      color: #7f8c8d;
+      font-size: 0.9em;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .value {
+      color: #2c3e50;
+    }
+    .history {
+      margin-top: 12px;
+      font-size: 0.9em;
+      color: #555;
+    }
+    .history-item {
+      display: block;
+      padding: 6px 0;
+      border-bottom: 1px dotted #eee;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .history-item:hover {
+      background-color: #f0f8ff;
+      padding-left: 5px;
+      color: #3498db;
+    }
+    .history-item:last-child {
+      border-bottom: none;
+    }
+    .loading {
+      text-align: center;
+      color: #7f8c8d;
+      font-style: italic;
+      margin: 20px 0;
+    }
+    .error {
+      color: #e74c3c;
+      font-size: 0.9em;
+      margin-top: 6px;
+    }
+    .error-module {
+      background-color: #fee;
+      border-color: #e74c3c;
+    }
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: #95a5a6;
+      font-size: 0.8em;
+    }
+    .url-info {
+      margin-top: 10px;
+      font-size: 0.8em;
+      color: #7f8c8d;
+      padding-top: 8px;
+      border-top: 1px solid #eee;
+    }
+    
+    /* 对话框样式 */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+    
+    .modal-content {
+	  background-color: white;
+	  padding: 20px;
+	  border: none;
+	  border-radius: 8px;
+	  width: 50%;               /* 宽度为视口宽度的一半 */
+	  max-width: 800px;         /* 可选：防止在超宽屏上过大 */
+	  max-height: 80vh;
+	  overflow-y: auto;
+	  position: fixed;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%); /* 精确居中 */
+	  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+	}
+    
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      line-height: 1;
+    }
+    
+    .close:hover {
+      color: #000;
+    }
+    
+	.log-content {
+	  white-space: pre;          /* 关键：禁止自动换行 */
+	  overflow-x: auto;          /* 横向滚动 */
+	  overflow-y: auto;          /* 纵向滚动已存在，保留 */
+	  font-family: monospace;
+	  background-color: #f5f5f5;
+	  padding: 15px;
+	  border-radius: 4px;
+	  border: 1px solid #ddd;
+	  max-height: 400px;
+	  /* 移除或注释掉下面这行（如果存在） */
+	  /* word-wrap: break-word; */
+	}
+    
+    .modal-title {
+      margin-top: 0;
+      color: #2c3e50;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>📊 固件版本信息中心</h1>
+  
+  <!-- 控制面板 -->
+  <div class="controls">
+    <div class="controls-header">
+      <div class="controls-title">选择要显示的固件模块：</div>
+      <div class="action-buttons">
+        <button id="selectAll">全选</button>
+        <button id="selectNone">全不选</button>
+        <button id="refreshBtn" class="refresh-btn">🔄 获取数据</button>
+      </div>
+    </div>
+    
+    <div class="checkbox-groups" id="moduleFilters">
+      <!-- 这里将通过JavaScript按产品分组动态生成复选框 -->
+    </div>
+  </div>
+  
+  <div id="results"></div>
+</div>
+
+<!-- 更新日志对话框 -->
+<div id="logModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3 class="modal-title" id="modalTitle">更新日志</h3>
+    <div class="log-content" id="logContent">加载中...</div>
+  </div>
+</div>
+
+<footer>
+  © 2025 版本监控工具 | 本地运行 · 安全可控
+</footer>
+
+<script>
+// URL 列表和对应的产品名称
+const urlMap = [
+  { url: "http://lithtml.com/Update/ASPD-110/", update: "update_mcu_v21.json", name: "冰箱版-主控板", product: "污水", log:"修改记录_ASPD_110_MCU_V21.txt", rawUrl:"http://dl.cii-tech.com/Update/ASPD-110/update_mcu_v21.json" },
+  { url: "http://lithtml.com/Update/ASPD-110/", update: "update_safs_b.json", name: "冰箱版-安卓板", product: "污水", log:"修改记录_SAFS-110B_android.txt", rawUrl:"http://dl.cii-tech.com/Update/ASPD-110/update_safs_b.json" },
+  { url: "http://lithtml.com/Update/ASPD-110/", update: "update_safs.json", name: "冰箱版-监控APP", product: "污水", log:"修改记录_SAFS-110_android.txt", rawUrl:"http://dl.cii-tech.com/Update/ASPD-110/update_safs.json" },
+  { url: "http://lithtml.com/Update/SAS-210/", update: "update.json", name: "单瓶板-主控板", product: "污水", log:"修改记录.txt", rawUrl:"http://dl.cii-tech.com/Update/SAS-210/update.json" },
+  { url: "http://lithtml.com/Update/ASPD-110/", update: "update.json", name: "污水APP", product: "污水", log:"修改记录_ASPD_110_MCU.txt", rawUrl:"http://dl.cii-tech.com/Update/ASPD-110/update.json" },
+  { url: "http://lithtml.com/Update/CRAIV-210Y/", update: "update.json", name: "Craiv210Y-安卓板", product: "一体机", log:"修改记录_CRAIV-210Y_android.txt", rawUrl:"http://dl.cii-tech.com/Update/CRAIV-210Y/update.json" },
+  { url: "http://lithtml.com/Update/CRAIV-210Y/", update: "update_mcu_v21.json", name: "Craiv210Y-主控板", product: "一体机", log:"修改记录_CRAIV_210Y_Main_V21.txt", rawUrl:"http://dl.cii-tech.com/Update/CRAIV-210Y/update_mcu_v21.json" },
+  { url: "http://lithtml.com/Update/CRAIV-210Y/", update: "update_signal.json", name: "Craiv210Y-信号板", product: "一体机", log:"修改记录_CRAIV_210Y_Signal.txt", rawUrl:"http://dl.cii-tech.com/Update/CRAIV-210Y/update_signal.json" },
+  { url: "http://lithtml.com/Update/CRAIV-110Y/", update: "update.json", name: "Craiv110Y-安卓板", product: "一体机", log:"修改记录_CRAIV-110Y_android.txt", rawUrl:"http://dl.cii-tech.com/Update/CRAIV-110Y/update.json" },
+  { url: "http://lithtml.com/Update/CRA-110/", update: "update.json", name: "掌上扫毒", product: "掌上扫毒", log:"修改记录_CRA-110_android.txt", rawUrl:"http://dl.cii-tech.com/Update/CRA-110/update.json" },
+  { url: "http://lithtml.com/Update/HIA-100/", update: "update.json", name: "手持荧光", product: "手持荧光", log:"修改记录.txt", rawUrl:"http://dl.cii-tech.com/Update/HIA-100/update.json"}
+];
+
+const resultsContainer = document.getElementById("results");
+const moduleFiltersContainer = document.getElementById("moduleFilters");
+const refreshBtn = document.getElementById("refreshBtn");
+const selectAllBtn = document.getElementById("selectAll");
+const selectNoneBtn = document.getElementById("selectNone");
+const logModal = document.getElementById("logModal");
+const modalTitle = document.getElementById("modalTitle");
+const logContent = document.getElementById("logContent");
+const closeBtn = document.querySelector(".close");
+
+const results = {}; // 用于存储所有获取到的数据
+
+// 从本地存储加载勾选状态
+let selectedModules = loadSelectedModules();
+
+// 生成模块筛选复选框（按产品分组）
+function renderModuleFilters() {
+  moduleFiltersContainer.innerHTML = '';
+  
+  // 按产品分组
+  const groupedModules = {};
+  urlMap.forEach(item => {
+    if (!groupedModules[item.product]) {
+      groupedModules[item.product] = [];
+    }
+    groupedModules[item.product].push(item);
+  });
+  
+  // 为每个产品创建一个复选框组
+  Object.entries(groupedModules).forEach(([productName, modules]) => {
+    const groupDiv = document.createElement('div');
+    groupDiv.className = 'checkbox-group';
+    groupDiv.innerHTML = `<div class="checkbox-group-title">${productName}</div>`;
+    
+    modules.forEach(module => {
+      const checkboxId = `module-${module.url.replace(/[^a-zA-Z0-9]/g, '-')}`;
+      const checkbox = document.createElement('div');
+      checkbox.className = 'checkbox-item';
+      checkbox.innerHTML = `
+        <input type="checkbox" id="${checkboxId}" value="${module.url}${module.update}" ${selectedModules.includes(module.url + module.update) ? 'checked' : ''}>
+        <label for="${checkboxId}">${module.name}</label>
+      `;
+      groupDiv.appendChild(checkbox);
+    });
+    
+    moduleFiltersContainer.appendChild(groupDiv);
+  });
+  
+  // 添加事件监听
+  document.querySelectorAll('#moduleFilters input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', saveSelectedModules);
+  });
+}
+
+// 保存勾选状态到本地存储
+function saveSelectedModules() {
+  const checkboxes = document.querySelectorAll('#moduleFilters input[type="checkbox"]:checked');
+  selectedModules = Array.from(checkboxes).map(cb => cb.value);
+  localStorage.setItem('selectedModules', JSON.stringify(selectedModules));
+}
+
+// 从本地存储加载勾选状态
+function loadSelectedModules() {
+  const saved = localStorage.getItem('selectedModules');
+  if (saved) {
+    return JSON.parse(saved);
+  }
+  // 默认全选（所有URL）
+  return urlMap.map(item => item.url + item.update);
+}
+
+// 获取选中的模块
+function getSelectedModules() {
+  return selectedModules;
+}
+
+// 构建下载URL
+function buildDownloadUrl(basePath, fileName) {
+  // 获取基础URL（去掉文件名部分）
+  const baseUrl = basePath;
+  return baseUrl + fileName;
+}
+
+// 下载文件函数
+function downloadFile(url, filename) {
+  // 如果是同源，可以直接用 a[download]
+  if (new URL(url).origin === window.location.origin) {
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename || url.substring(url.lastIndexOf('/') + 1);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    return;
+  }
+
+  // 跨域情况：必须通过 fetch + Blob 方式
+  fetch(url)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`下载失败: ${response.status} ${response.statusText}`);
+      }
+      return response.blob();
+    })
+    .then(blob => {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = filename || url.substring(url.lastIndexOf('/') + 1);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href); // 释放内存
+    })
+    .catch(err => {
+      alert(`下载失败：${err.message}\n\nURL: ${url}`);
+      console.error('Download error:', err);
+    });
+}
+
+// 点击历史版本下载文件
+function downloadHistoryVersion(basePath, version) {
+  const downloadUrl = buildDownloadUrl(basePath, version);
+  downloadFile(downloadUrl, version);
+}
+
+// 显示更新日志对话框
+function showUpdateLog(basePath, logFile, moduleName) {
+  modalTitle.textContent = `更新日志 - ${moduleName}`;
+  logContent.textContent = "加载中...";
+  logModal.style.display = "block";
+
+  const logUrl = buildDownloadUrl(basePath, logFile);
+
+  fetch(logUrl)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`服务器错误: ${response.status}`);
+      }
+      return response.arrayBuffer(); // 获取原始二进制数据
+    })
+    .then(arrayBuffer => {
+      // 使用 TextDecoder 指定编码为 'gbk'（兼容 GB2312）
+      const decoder = new TextDecoder('gbk', { fatal: false });
+      const text = decoder.decode(arrayBuffer);
+      logContent.textContent = text;
+    })
+    .catch(error => {
+      logContent.textContent = `加载更新日志失败: ${error.message}`;
+    });
+}
+
+async function loadAllVersions() {
+  // 禁用按钮
+  refreshBtn.disabled = true;
+  refreshBtn.textContent = "加载中...";
+
+  const productData = {};
+  const selectedUrls = getSelectedModules();
+  
+  // 先按产品分组
+  for (const item of urlMap) {
+    const fullUrl = item.url + item.update;
+    if (!selectedUrls.includes(fullUrl)) {
+      continue; // 跳过未选中的模块
+    }
+    if (!productData[item.product]) {
+      productData[item.product] = [];
+    }
+    productData[item.product].push(item);
+  }
+
+  // 清空结果容器
+  resultsContainer.innerHTML = "";
+
+  try {
+    // 为每个有选中模块的产品创建卡片
+    for (const [productName, items] of Object.entries(productData)) {
+      if (items.length === 0) continue; // 跳过没有选中模块的产品
+      
+      const productCard = document.createElement("div");
+      productCard.className = "product-card";
+      productCard.innerHTML = `<h2>${productName}</h2>`;
+      
+      const modulesContainer = document.createElement("div");
+      
+      // 为每个选中的模块加载数据
+      for (const item of items) {
+        const fullUrl = item.url + item.update;
+        try {
+          const response = await fetch(fullUrl);
+          if (!response.ok) {
+            throw new Error(`服务器错误: ${response.status}`);
+          }
+          const data = await response.json();
+          
+          // 保存数据到全局对象
+          results[fullUrl] = data;
+          
+          modulesContainer.appendChild(createModuleCard(data, item.url, item.name, item.log, item.rawUrl));
+        } catch (err) {
+          modulesContainer.appendChild(createErrorModuleCard(fullUrl, item.name, err.message));
+        }
+      }
+      
+      productCard.appendChild(modulesContainer);
+      resultsContainer.appendChild(productCard);
+    }
+  } finally {
+    // 启用按钮
+    refreshBtn.disabled = false;
+    refreshBtn.textContent = "🔄 获取数据";
+  }
+}
+
+function createModuleCard(data, baseUrl, name, logFile, rawUrl) {
+  const moduleCard = document.createElement("div");
+  moduleCard.className = "module-card";
+
+  // 构建最新版本下载URL
+  const latestDownloadUrl = data.latest ? buildDownloadUrl(baseUrl, data.latest) : null;
+  
+  // 构建历史版本列表
+  let historyList = "";
+  if (data.history && Array.isArray(data.history) && data.history.length > 0) {
+    historyList = `<details><summary>历史版本 (${data.history.length})</summary><div class="history">`;
+    data.history.forEach(version => {
+      historyList += `
+        <div class="history-item" onclick="downloadHistoryVersion('${baseUrl}', '${version}')" title="点击下载 ${version}">
+          ${version}
+        </div>
+      `;
+    });
+    historyList += `</div></details>`;
+  }
+
+  moduleCard.innerHTML = `
+    <h3 class="module-title">${name}</h3>
+    <div class="info">
+      <div class="info-item-version">
+        <span class="label">软体版本:</span>
+        <span class="value">${data.softVersion || '-'}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">发布者:</span>
+        <span class="value">${data.publisher || '-'}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">发布日期:</span>
+        <span class="value">${data.releaseDate || '-'}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">版本号:</span>
+        <span class="value">${data.releaseVersion || '-'}</span>
+      </div>
+	  <div class="info-item">
+		<span class="label">最新版:</span>
+        <button class="download-btn" onclick="downloadFile('${latestDownloadUrl}', '${data.latest}')"  title="点击下载最新版">下载</button>
+      </div>
+	  <div class="info-item">
+		<span class="label">更新日志:</span>
+        <button class="view-log-btn" onclick="showUpdateLog('${baseUrl}', '${logFile}', '${name}')"  title="点击查看更新日志">查看</button>
+		<button class="download-btn" style="margin-left:6px;" onclick="downloadFile('${buildDownloadUrl(baseUrl, logFile)}', '${logFile}')" title="下载更新日志">下载</button>
+      </div>
+    </div>
+    ${historyList}
+    <div class="url-info">
+      <span class="label">数据源:</span> <code>${rawUrl}</code>
+    </div>
+  `;
+  return moduleCard;
+}
+
+function createErrorModuleCard(url, name, errorMsg) {
+  const moduleCard = document.createElement("div");
+  moduleCard.className = "module-card error-module";
+  moduleCard.innerHTML = `
+    <h3 class="module-title" style="color:#e74c3c;">❌ ${name}</h3>
+    <div class="error"><strong>错误信息:</strong> ${errorMsg}</div>
+    <div class="url-info">
+      <span class="label">URL地址:</span> <code>${url}</code>
+    </div>
+  `;
+  return moduleCard;
+}
+
+// 事件监听
+refreshBtn.addEventListener('click', () => {
+  loadAllVersions().catch(console.error);
+});
+
+selectAllBtn.addEventListener('click', () => {
+  document.querySelectorAll('#moduleFilters input[type="checkbox"]').forEach(checkbox => {
+    checkbox.checked = true;
+  });
+  saveSelectedModules();
+});
+
+selectNoneBtn.addEventListener('click', () => {
+  document.querySelectorAll('#moduleFilters input[type="checkbox"]').forEach(checkbox => {
+    checkbox.checked = false;
+  });
+  saveSelectedModules();
+});
+
+// 对话框事件监听
+closeBtn.addEventListener('click', () => {
+  logModal.style.display = "none";
+});
+
+window.addEventListener('click', (event) => {
+  if (event.target === logModal) {
+    logModal.style.display = "none";
+  }
+});
+
+// 页面加载完成后初始化
+window.onload = () => {
+  renderModuleFilters();
+  loadAllVersions().catch(console.error);
+};
+</script>
+
+
+

@@ -157,7 +157,7 @@
     }
 	.info-item {
       flex: 1;
-      min-width: 80px;
+      min-width: 150px;
     }
     .label {
       font-weight: bold;
@@ -321,17 +321,17 @@
 <script>
 // URL 列表和对应的产品名称
 const urlMap = [
-  { url: "http://lithtml.com/Update/ASPD-110/", update: "update_mcu_v21.json", name: "冰箱版-主控板", product: "污水", log:"修改记录_ASPD_110_MCU_V21.txt", rawUrl:"http://dl.cii-tech.com/Update/ASPD-110/update_mcu_v21.json" },
-  { url: "http://lithtml.com/Update/ASPD-110/", update: "update_safs_b.json", name: "冰箱版-安卓板", product: "污水", log:"修改记录_SAFS-110B_android.txt", rawUrl:"http://dl.cii-tech.com/Update/ASPD-110/update_safs_b.json" },
-  { url: "http://lithtml.com/Update/ASPD-110/", update: "update_safs.json", name: "冰箱版-监控APP", product: "污水", log:"修改记录_SAFS-110_android.txt", rawUrl:"http://dl.cii-tech.com/Update/ASPD-110/update_safs.json" },
-  { url: "http://lithtml.com/Update/SAS-210/", update: "update.json", name: "单瓶板-主控板", product: "污水", log:"修改记录.txt", rawUrl:"http://dl.cii-tech.com/Update/SAS-210/update.json" },
-  { url: "http://lithtml.com/Update/ASPD-110/", update: "update.json", name: "污水APP", product: "污水", log:"修改记录_ASPD_110_MCU.txt", rawUrl:"http://dl.cii-tech.com/Update/ASPD-110/update.json" },
-  { url: "http://lithtml.com/Update/CRAIV-210Y/", update: "update.json", name: "Craiv210Y-安卓板", product: "一体机", log:"修改记录_CRAIV-210Y_android.txt", rawUrl:"http://dl.cii-tech.com/Update/CRAIV-210Y/update.json" },
-  { url: "http://lithtml.com/Update/CRAIV-210Y/", update: "update_mcu_v21.json", name: "Craiv210Y-主控板", product: "一体机", log:"修改记录_CRAIV_210Y_Main_V21.txt", rawUrl:"http://dl.cii-tech.com/Update/CRAIV-210Y/update_mcu_v21.json" },
-  { url: "http://lithtml.com/Update/CRAIV-210Y/", update: "update_signal.json", name: "Craiv210Y-信号板", product: "一体机", log:"修改记录_CRAIV_210Y_Signal.txt", rawUrl:"http://dl.cii-tech.com/Update/CRAIV-210Y/update_signal.json" },
-  { url: "http://lithtml.com/Update/CRAIV-110Y/", update: "update.json", name: "Craiv110Y-安卓板", product: "一体机", log:"修改记录_CRAIV-110Y_android.txt", rawUrl:"http://dl.cii-tech.com/Update/CRAIV-110Y/update.json" },
-  { url: "http://lithtml.com/Update/CRA-110/", update: "update.json", name: "掌上扫毒", product: "掌上扫毒", log:"修改记录_CRA-110_android.txt", rawUrl:"http://dl.cii-tech.com/Update/CRA-110/update.json" },
-  { url: "http://lithtml.com/Update/HIA-100/", update: "update.json", name: "手持荧光", product: "手持荧光", log:"修改记录.txt", rawUrl:"http://dl.cii-tech.com/Update/HIA-100/update.json"}
+  { url: "https://lithtml.com/Update/ASPD-110/", update: "update_mcu_v21.json", name: "冰箱版-主控板", product: "污水", log:"修改记录_ASPD_110_MCU_V21.txt", rawUrl:"http://dl.cii-tech.com/Update/ASPD-110/update_mcu_v21.json" },
+  { url: "https://lithtml.com/Update/ASPD-110/", update: "update_safs_b.json", name: "冰箱版-安卓板", product: "污水", log:"修改记录_SAFS-110B_android.txt", rawUrl:"http://dl.cii-tech.com/Update/ASPD-110/update_safs_b.json" },
+  { url: "https://lithtml.com/Update/ASPD-110/", update: "update_safs.json", name: "冰箱版-监控APP", product: "污水", log:"修改记录_SAFS-110_android.txt", rawUrl:"http://dl.cii-tech.com/Update/ASPD-110/update_safs.json" },
+  { url: "https://lithtml.com/Update/SAS-210/", update: "update.json", name: "单瓶板-主控板", product: "污水", log:"修改记录.txt", rawUrl:"http://dl.cii-tech.com/Update/SAS-210/update.json" },
+  { url: "https://lithtml.com/Update/ASPD-110/", update: "update.json", name: "污水APP", product: "污水", log:"修改记录_ASPD_110_MCU.txt", rawUrl:"http://dl.cii-tech.com/Update/ASPD-110/update.json" },
+  { url: "https://lithtml.com/Update/CRAIV-210Y/", update: "update.json", name: "Craiv210Y-安卓板", product: "一体机", log:"修改记录_CRAIV-210Y_android.txt", rawUrl:"http://dl.cii-tech.com/Update/CRAIV-210Y/update.json" },
+  { url: "https://lithtml.com/Update/CRAIV-210Y/", update: "update_mcu_v21.json", name: "Craiv210Y-主控板", product: "一体机", log:"修改记录_CRAIV_210Y_Main_V21.txt", rawUrl:"http://dl.cii-tech.com/Update/CRAIV-210Y/update_mcu_v21.json" },
+  { url: "https://lithtml.com/Update/CRAIV-210Y/", update: "update_signal.json", name: "Craiv210Y-信号板", product: "一体机", log:"修改记录_CRAIV_210Y_Signal.txt", rawUrl:"http://dl.cii-tech.com/Update/CRAIV-210Y/update_signal.json" },
+  { url: "https://lithtml.com/Update/CRAIV-110Y/", update: "update.json", name: "Craiv110Y-安卓板", product: "一体机", log:"修改记录_CRAIV-110Y_android.txt", rawUrl:"http://dl.cii-tech.com/Update/CRAIV-110Y/update.json" },
+  { url: "https://lithtml.com/Update/CRA-110/", update: "update.json", name: "掌上扫毒", product: "掌上扫毒", log:"修改记录_CRA-110_android.txt", rawUrl:"http://dl.cii-tech.com/Update/CRA-110/update.json" },
+  { url: "https://lithtml.com/Update/HIA-100/", update: "update.json", name: "手持荧光", product: "手持荧光", log:"修改记录.txt", rawUrl:"http://dl.cii-tech.com/Update/HIA-100/update.json"}
 ];
 
 const resultsContainer = document.getElementById("results");
